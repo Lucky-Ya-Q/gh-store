@@ -5,10 +5,15 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "node index.js"
   },
   "dependencies": {
+    "@octokit/core": "^4.0.4",
+    "@octokit/oauth-app": "^4.0.6",
+    "@vercel/node": "^2.5.6",
     "core-js": "^3.8.3",
+    "octokit-auth-oauth-user-client": "^0.1.6",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0"
