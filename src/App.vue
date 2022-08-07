@@ -1,5 +1,5 @@
 <template>
-  <n-config-provider :theme="isDark ? darkTheme : lightTheme">
+  <n-config-provider :theme="config.isDark ? darkTheme : lightTheme">
     <n-dialog-provider>
       <n-message-provider>
         <router-view></router-view>
@@ -14,7 +14,7 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 
 const store = useStore()
-const isDark = computed(() => store.state.isDark)
+const config = computed(() => store.state.config)
 </script>
 
 <style lang="scss">

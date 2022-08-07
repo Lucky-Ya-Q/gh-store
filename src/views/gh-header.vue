@@ -9,16 +9,22 @@
     <div class="button">
       <n-space>
         <n-button @click="toggleTheme" quaternary>
-          {{ isDark ? '浅色' : '深色' }}
+          {{ config.isDark ? '浅色' : '深色' }}
         </n-button>
-        <n-dropdown v-if="user" trigger="hover" :options="options" @select="handleSelect">
-          <n-tag :bordered="false" size="large" checkable>
-            {{ user.name }}
-            <template #avatar>
-              <n-avatar :src="user.avatar_url"/>
-            </template>
-          </n-tag>
-        </n-dropdown>
+        <template v-if="user">
+          <n-select style="width: 180px"
+                    :options="repos" label-field="name" value-field="node_id"
+                    @update:value="handleUpdateValue" :value="currentRepo"
+                    placeholder="请选择仓库" filterable/>
+          <n-dropdown trigger="hover" :options="options" @select="handleSelect">
+            <n-tag :bordered="false" size="large" checkable>
+              {{ user.name }}
+              <template #avatar>
+                <n-avatar :src="user.avatar_url"/>
+              </template>
+            </n-tag>
+          </n-dropdown>
+        </template>
         <n-button v-else @click="login" quaternary :disabled="loginButton.disabled">
           {{ loginButton.text }}
         </n-button>
@@ -40,10 +46,16 @@ const router = useRouter()
 
 const octokit = computed(() => store.state.octokit)
 const user = computed(() => store.state.user)
-const isDark = computed(() => store.state.isDark)
+const config = computed(() => store.state.config)
+const repos = computed(() => store.state.repos)
+const currentRepo = computed(() => store.state.currentRepo)
 
 function toggleTheme () {
-  store.commit('setIsDark', !isDark.value)
+  store.commit('setIsDark', !config.value.isDark)
+}
+
+function handleUpdateValue (value) {
+  store.commit('setCurrentRepo', value)
 }
 
 const loginButton = reactive({
@@ -55,6 +67,9 @@ octokit.value.auth().then(auth => {
     loginButton.text = '登录中'
     octokit.value.request('GET /user').then(data => {
       store.commit('setUser', data.data)
+      octokit.value.request('GET /user/repos').then((data) => {
+        store.commit('setRepos', data.data)
+      })
     }).catch((e) => {
       message.error(e.message)
       logout()
@@ -78,10 +93,6 @@ function handleSelect (key) {
   switch (key) {
     case 'userInfo':
       router.push('/user-info')
-      // message.info(String(key))
-      // octokit.value.request('GET /user/repos', {}).then((data) => {
-      //   console.log(data)
-      // })
       break
     case 'logout':
       dialog.warning({
@@ -113,7 +124,7 @@ function logout (msg) {
     type: 'deleteToken',
     offline: true
   }).then(() => {
-    store.commit('setUser', null)
+    store.commit('logout')
     router.push('/index')
     if (msg) {
       message.success(msg)

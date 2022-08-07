@@ -8,12 +8,12 @@
                       collapse-mode="width"
                       :width="style.width"
                       :collapsed-width="style.collapsedWidth"
-                      :collapsed="collapsed"
+                      :collapsed="config.collapsed"
                       show-trigger="bar"
-                      @collapse="collapsed = true"
-                      @expand="collapsed = false">
+                      @collapse="setCollapsed(true)"
+                      @expand="setCollapsed(false)">
         <n-menu
-          :collapsed="collapsed"
+          :collapsed="config.collapsed"
           :collapsed-width="style.collapsedWidth"
           :options="menuOptions"
           :value="currentRoute.name"
@@ -27,11 +27,12 @@
 </template>
 
 <script setup>
-import { h, reactive, ref } from 'vue'
+import { computed, h, reactive } from 'vue'
 import { NIcon } from 'naive-ui'
 import { CloudUploadOutline, HomeOutline, ImagesOutline } from '@vicons/ionicons5'
 import GhHeader from '@/views/gh-header'
 import { RouterLink, useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 
 const style = reactive({
   width: 240,
@@ -43,7 +44,12 @@ function renderIcon (icon) {
   return () => h(NIcon, null, { default: () => h(icon) })
 }
 
-const collapsed = ref(false)
+const store = useStore()
+const config = computed(() => store.state.config)
+
+function setCollapsed (collapsed) {
+  store.commit('setCollapsed', collapsed)
+}
 
 const menuOptions = [
   {
