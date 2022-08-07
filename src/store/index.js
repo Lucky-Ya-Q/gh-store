@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import { Octokit } from '@octokit/core'
 import { createOAuthUserClientAuth } from 'octokit-auth-oauth-user-client'
+import createPersistedState from 'vuex-persistedstate'
 
 export default createStore({
   state: {
@@ -28,5 +29,6 @@ export default createStore({
     }
   },
   actions: {},
-  modules: {}
+  modules: {},
+  plugins: [createPersistedState()]
 })
