@@ -13,7 +13,7 @@
         </n-button>
         <template v-if="user">
           <n-select style="width: 180px"
-                    :options="repos" label-field="name" value-field="node_id"
+                    :options="repos" label-field="name" value-field="name"
                     @update:value="handleUpdateValue" :value="currentRepo"
                     placeholder="请选择仓库" filterable/>
           <n-dropdown trigger="hover" :options="options" @select="handleSelect">
