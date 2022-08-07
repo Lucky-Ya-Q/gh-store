@@ -1,5 +1,5 @@
 <template>
-  <n-layout position="absolute" style="min-width: 650px">
+  <n-layout position="absolute" style="min-width: 700px">
     <n-layout-header style="height: 64px" bordered>
       <gh-header></gh-header>
     </n-layout-header>
