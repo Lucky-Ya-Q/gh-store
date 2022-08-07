@@ -30,11 +30,13 @@
 <script setup>
 import { LogoGithub } from '@vicons/ionicons5'
 import { computed, reactive } from 'vue'
-import { useMessage } from 'naive-ui'
+import { useDialog, useMessage } from 'naive-ui'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 const store = useStore()
 const message = useMessage()
+const router = useRouter()
 
 const octokit = computed(() => store.state.octokit)
 const user = computed(() => store.state.user)
@@ -70,16 +72,27 @@ function login () {
   octokit.value.auth({ type: 'signIn' })
 }
 
+const dialog = useDialog()
+
 function handleSelect (key) {
   switch (key) {
     case 'userInfo':
-      message.info(String(key))
-      octokit.value.request('GET /user/repos', {}).then((data) => {
-        console.log(data)
-      })
+      router.push('/user-info')
+      // message.info(String(key))
+      // octokit.value.request('GET /user/repos', {}).then((data) => {
+      //   console.log(data)
+      // })
       break
     case 'logout':
-      logout('退出成功')
+      dialog.warning({
+        title: '警告',
+        content: '确定退出登录吗？',
+        positiveText: '确定',
+        negativeText: '取消',
+        onPositiveClick: () => {
+          logout('退出成功')
+        }
+      })
       break
   }
 }
@@ -101,6 +114,7 @@ function logout (msg) {
     offline: true
   }).then(() => {
     store.commit('setUser', null)
+    router.push('/index')
     if (msg) {
       message.success(msg)
     }

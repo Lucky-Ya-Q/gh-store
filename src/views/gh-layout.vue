@@ -13,25 +13,14 @@
                       @collapse="collapsed = true"
                       @expand="collapsed = false">
         <n-menu
-          v-model:value="activeKey"
           :collapsed="collapsed"
           :collapsed-width="style.collapsedWidth"
           :options="menuOptions"
+          :value="currentRoute.name"
         />
       </n-layout-sider>
       <n-layout content-style="padding: 24px" :native-scrollbar="false">
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
-        <n-h2>平山道</n-h2>
+        <router-view></router-view>
       </n-layout>
     </n-layout>
   </n-layout>
@@ -40,36 +29,58 @@
 <script setup>
 import { h, reactive, ref } from 'vue'
 import { NIcon } from 'naive-ui'
-import { BookOutline as BookIcon } from '@vicons/ionicons5'
+import { CloudUploadOutline, HomeOutline, ImagesOutline } from '@vicons/ionicons5'
 import GhHeader from '@/views/gh-header'
+import { RouterLink, useRoute } from 'vue-router'
 
 const style = reactive({
   width: 240,
   collapsedWidth: 64
 })
+const currentRoute = useRoute()
 
 function renderIcon (icon) {
   return () => h(NIcon, null, { default: () => h(icon) })
 }
 
-const activeKey = ref(null)
 const collapsed = ref(false)
 
 const menuOptions = [
   {
-    label: '首页',
-    key: 'shouye',
-    icon: renderIcon(BookIcon)
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: '/index'
+        },
+        { default: () => '首页' }
+      ),
+    key: 'index',
+    icon: renderIcon(HomeOutline)
   },
   {
-    label: '上传图片',
-    key: 'hear-the-wind-sing',
-    icon: renderIcon(BookIcon)
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: '/upload-img'
+        },
+        { default: () => '上传图片' }
+      ),
+    key: 'uploadImg',
+    icon: renderIcon(CloudUploadOutline)
   },
   {
-    label: '图片管理',
-    key: 'pinball-1973',
-    icon: renderIcon(BookIcon)
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: '/image-mgr'
+        },
+        { default: () => '图片管理' }
+      ),
+    key: 'imageMgr',
+    icon: renderIcon(ImagesOutline)
   }
 ]
 </script>
