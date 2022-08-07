@@ -5,11 +5,22 @@
       {{ path === '' ? '根目录' : path }}
     </n-breadcrumb-item>
   </n-breadcrumb>
-  <div class="folder">
-    <div v-for="(item,index) of folder" :key="index" @click="paths.push(item.name)">
-      {{ item.name }}
-    </div>
-  </div>
+  <n-image-group>
+    <n-grid cols="2 450:3 650:4 850:5 1050:6 1250:7" :x-gap="8" :y-gap="8">
+      <n-grid-item v-for="(file,index) of files" :key="index">
+        <div class="dir" v-if="file.type==='dir'" @click="tz(file.name)">
+          <n-icon size="120" style="width: 100%">
+            <folder-outline/>
+          </n-icon>
+          <div style="text-align: center">{{ file.name }}</div>
+        </div>
+        <div class="img" v-else>
+          <n-image style="width: 100%" :src="file.download_url" object-fit="cover"/>
+          <div style="text-align: center">{{ file.name }}</div>
+        </div>
+      </n-grid-item>
+    </n-grid>
+  </n-image-group>
 </template>
 
 <script setup>
@@ -19,7 +30,7 @@ import { FolderOutline } from '@vicons/ionicons5'
 
 const store = useStore()
 const paths = ref([''])
-const folder = ref()
+const files = ref()
 
 const octokit = computed(() => store.state.octokit)
 const user = computed(() => store.state.user)
@@ -41,12 +52,35 @@ function path (paths) {
     repo: currentRepo.value,
     path: paths.join('/')
   }).then((data) => {
-    folder.value = data.data
+    files.value = data.data
   })
+}
+
+function tz (name) {
+  paths.value.push(name)
 }
 
 </script>
 
 <style scoped lang="scss">
+.dir {
+  padding: 10px;
+  border: solid 1px red;
+  //谁做过渡给谁加
+  transition: all .3s;
+  cursor: pointer;
 
+  &:hover {
+    background-color: #e1e1e1;
+  }
+}
+
+.img {
+  padding: 10px;
+  border: solid 1px red;
+}
+::v-deep(.n-image img){
+  width: 100%;
+  height: 120px;
+}
 </style>
