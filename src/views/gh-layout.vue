@@ -10,8 +10,8 @@
                       :collapsed-width="style.collapsedWidth"
                       :collapsed="config.collapsed"
                       show-trigger="bar"
-                      @collapse="config.collapsed=true"
-                      @expand="config.collapsed=false">
+                      @collapse="setCollapsed(true)"
+                      @expand="setCollapsed(false)">
         <n-menu
           :collapsed="config.collapsed"
           :collapsed-width="style.collapsedWidth"
@@ -46,7 +46,11 @@ function renderIcon (icon) {
 
 const store = useStore()
 const config = computed(() => store.state.config)
-
+function setCollapsed (collapsed) {
+  store.commit('setConfig', {
+    collapsed
+  })
+}
 const menuOptions = [
   {
     label: () =>

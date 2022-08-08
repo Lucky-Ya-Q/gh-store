@@ -8,7 +8,7 @@
     </div>
     <div class="button">
       <n-space>
-        <n-button @click="config.isDark=!config.isDark" quaternary>
+        <n-button @click="toggle(!config.isDark)" quaternary>
           {{ config.isDark ? '浅色' : '深色' }}
         </n-button>
         <template v-if="user">
@@ -52,6 +52,12 @@ const currentRepo = computed(() => store.state.currentRepo)
 
 function handleUpdateValue (value) {
   store.commit('setCurrentRepo', value)
+}
+
+function toggle (isDark) {
+  store.commit('setConfig', {
+    isDark
+  })
 }
 
 const loginButton = reactive({

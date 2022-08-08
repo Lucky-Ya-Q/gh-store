@@ -1,6 +1,6 @@
 <template>
   <n-breadcrumb style="padding-bottom: 24px">
-    <n-breadcrumb-item v-for="(path,index) of paths" :key="index" @click="paths.splice(index+1,paths.length-index+1)">
+    <n-breadcrumb-item v-for="(path,index) of paths" :key="index" @click="spliceCurrentDir(index)">
       <n-icon :component="FolderOutline"/>
       {{ path === '' ? '根目录' : path }}
     </n-breadcrumb-item>
@@ -9,7 +9,7 @@
     <n-spin :show="show">
       <n-space v-if="files.length > 0">
         <template v-for="(file,index) of files" :key="index">
-          <div class="dir" v-if="file.type==='dir'" @click="tz(file.name)">
+          <div class="dir" v-if="file.type==='dir'" @click="pushCurrentDir(file.name)">
             <n-icon size="120" style="width: 100%">
               <folder-outline/>
             </n-icon>
@@ -64,13 +64,14 @@ const currentRepo = computed(() => store.state.currentRepo)
 
 // 每个仓库的当前目录
 const currentDir = computed(() => store.state.currentDir)
+
 const paths = ref(getCurrentDirPaths(currentRepo.value))
 
 watch(currentRepo, (newValue) => {
   paths.value = getCurrentDirPaths(newValue)
 })
+
 watch(paths, (newValue) => {
-  console.log('getFiles', newValue)
   getFiles(newValue)
 }, {
   immediate: true,
@@ -90,8 +91,18 @@ function getFiles (paths) {
   })
 }
 
-function tz (name) {
-  paths.value.push(name)
+function pushCurrentDir (name) {
+  store.commit('pushCurrentDir', {
+    currentRepo: currentRepo.value,
+    name
+  })
+}
+
+function spliceCurrentDir (index) {
+  store.commit('spliceCurrentDir', {
+    currentRepo: currentRepo.value,
+    index
+  })
 }
 
 function getCurrentDirPaths (name) {

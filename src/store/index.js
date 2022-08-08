@@ -45,6 +45,18 @@ export default createStore({
     setCurrentRepo (state, currentRepo) {
       state.currentRepo = currentRepo
     },
+    setConfig (state, config) {
+      for (const key in config) {
+        state.config[key] = config[key]
+      }
+    },
+    pushCurrentDir (state, currentDir) {
+      state.currentDir[currentDir.currentRepo].push(currentDir.name)
+    },
+    spliceCurrentDir (state, currentDir) {
+      const paths = state.currentDir[currentDir.currentRepo]
+      paths.splice(currentDir.index + 1, paths.length - currentDir.index + 1)
+    },
     logout (state) {
       state.user = null
       state.repos = null
