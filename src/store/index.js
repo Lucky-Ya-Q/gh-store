@@ -45,15 +45,6 @@ export default createStore({
     setCurrentRepo (state, currentRepo) {
       state.currentRepo = currentRepo
     },
-    setIsDark (state, isDark) {
-      state.config.isDark = isDark
-    },
-    setCollapsed (state, collapsed) {
-      state.config.collapsed = collapsed
-    },
-    setCurrentDir (state, currentDir) {
-      state.config.currentDir[currentDir.key] = [currentDir.value]
-    },
     logout (state) {
       state.user = null
       state.repos = null

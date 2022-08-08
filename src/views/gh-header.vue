@@ -8,7 +8,7 @@
     </div>
     <div class="button">
       <n-space>
-        <n-button @click="toggleTheme" quaternary>
+        <n-button @click="config.isDark=!config.isDark" quaternary>
           {{ config.isDark ? '浅色' : '深色' }}
         </n-button>
         <template v-if="user">
@@ -49,10 +49,6 @@ const user = computed(() => store.state.user)
 const config = computed(() => store.state.config)
 const repos = computed(() => store.state.repos)
 const currentRepo = computed(() => store.state.currentRepo)
-
-function toggleTheme () {
-  store.commit('setIsDark', !config.value.isDark)
-}
 
 function handleUpdateValue (value) {
   store.commit('setCurrentRepo', value)
