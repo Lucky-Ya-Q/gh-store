@@ -61,10 +61,12 @@ router.beforeEach((to, from, next) => {
       if (currentRepo.value) {
         next()
       } else {
+        next('/index')
         // 没有选择仓库
         window.$message.info('请选择图片仓库')
       }
     } else {
+      next('/index')
       // 没有登录
       window.$message.info('请先登录并且选择图片仓库')
     }
