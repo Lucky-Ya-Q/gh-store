@@ -65,10 +65,9 @@ const currentRepo = computed(() => store.state.currentRepo)
 // 每个仓库的当前目录
 const currentDir = computed(() => store.state.currentDir)
 
-const paths = ref(getCurrentDirPaths(currentRepo.value))
-
-watch(currentRepo, (newValue) => {
-  paths.value = getCurrentDirPaths(newValue)
+const paths = computed(() => {
+  store.commit('initCurrentDir', currentRepo.value)
+  return currentDir.value[currentRepo.value]
 })
 
 watch(paths, (newValue) => {
@@ -103,15 +102,6 @@ function spliceCurrentDir (index) {
     currentRepo: currentRepo.value,
     index
   })
-}
-
-function getCurrentDirPaths (name) {
-  let paths = currentDir.value[name]
-  if (!paths) {
-    currentDir.value[name] = ['']
-    paths = currentDir.value[name]
-  }
-  return paths
 }
 
 function filter (files) {

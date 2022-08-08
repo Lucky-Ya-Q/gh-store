@@ -50,6 +50,11 @@ export default createStore({
         state.config[key] = config[key]
       }
     },
+    initCurrentDir (state, currentRepo) {
+      if (!state.currentDir[currentRepo]) {
+        state.currentDir[currentRepo] = ['']
+      }
+    },
     pushCurrentDir (state, currentDir) {
       state.currentDir[currentDir.currentRepo].push(currentDir.name)
     },
