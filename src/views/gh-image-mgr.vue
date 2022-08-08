@@ -55,25 +55,29 @@ import { FolderOpenOutline, FolderOutline, LogoGithub, LogoMarkdown } from '@vic
 import { getFileSuffix, isImage } from '@/utils/file-utils'
 
 const store = useStore()
-const paths = ref([''])
 const files = ref([])
 const show = ref(false)
 
 const octokit = computed(() => store.state.octokit)
 const user = computed(() => store.state.user)
 const currentRepo = computed(() => store.state.currentRepo)
-watch(currentRepo, () => {
-  if (paths.value.length === 1) {
-    path(paths.value)
-  } else {
-    paths.value.splice(1, paths.value.length - 1)
-  }
-})
-watch(paths.value, (newValue) => {
-  path(newValue)
-}, { immediate: true })
 
-function path (paths) {
+// 每个仓库的当前目录
+const currentDir = computed(() => store.state.currentDir)
+const paths = ref(getCurrentDirPaths(currentRepo.value))
+
+watch(currentRepo, (newValue) => {
+  paths.value = getCurrentDirPaths(newValue)
+})
+watch(paths, (newValue) => {
+  console.log('getFiles', newValue)
+  getFiles(newValue)
+}, {
+  immediate: true,
+  deep: true
+})
+
+function getFiles (paths) {
   show.value = true
   octokit.value.request('GET /repos/{owner}/{repo}/contents/{path}', {
     owner: user.value.login,
@@ -88,6 +92,15 @@ function path (paths) {
 
 function tz (name) {
   paths.value.push(name)
+}
+
+function getCurrentDirPaths (name) {
+  let paths = currentDir.value[name]
+  if (!paths) {
+    currentDir.value[name] = ['']
+    paths = currentDir.value[name]
+  }
+  return paths
 }
 
 function filter (files) {

@@ -20,6 +20,10 @@ export default createStore({
     repos: null,
     // 当前选中的仓库
     currentRepo: null,
+    // 每个仓库的当前目录
+    currentDir: {
+      'Lucky-Ya-Q': ['']
+    },
     config: {
       // 暗黑模式
       isDark: false,
@@ -46,6 +50,9 @@ export default createStore({
     },
     setCollapsed (state, collapsed) {
       state.config.collapsed = collapsed
+    },
+    setCurrentDir (state, currentDir) {
+      state.config.currentDir[currentDir.key] = [currentDir.value]
     },
     logout (state) {
       state.user = null
