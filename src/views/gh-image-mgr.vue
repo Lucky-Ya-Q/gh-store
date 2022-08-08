@@ -91,7 +91,7 @@ function getFiles (paths) {
 }
 
 function tz (name) {
-  paths.value.push(name)
+  currentDir.value[currentRepo.value].push(name)
 }
 
 function getCurrentDirPaths (name) {
