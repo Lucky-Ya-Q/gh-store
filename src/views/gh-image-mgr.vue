@@ -7,7 +7,7 @@
   </n-breadcrumb>
   <n-image-group>
     <n-spin :show="show">
-      <n-space>
+      <n-space v-if="files.length > 0">
         <template v-for="(file,index) of files" :key="index">
           <div class="dir" v-if="file.type==='dir'" @click="tz(file.name)">
             <n-icon size="120" style="width: 100%">
@@ -37,6 +37,13 @@
           </div>
         </template>
       </n-space>
+      <n-empty v-else description="空文件夹" size="huge">
+        <template #icon>
+          <n-icon>
+            <folder-open-outline/>
+          </n-icon>
+        </template>
+      </n-empty>
     </n-spin>
   </n-image-group>
 </template>
@@ -44,12 +51,12 @@
 <script setup>
 import { useStore } from 'vuex'
 import { computed, ref, watch } from 'vue'
-import { FolderOutline, LogoGithub, LogoMarkdown } from '@vicons/ionicons5'
+import { FolderOpenOutline, FolderOutline, LogoGithub, LogoMarkdown } from '@vicons/ionicons5'
 import { getFileSuffix, isImage } from '@/utils/file-utils'
 
 const store = useStore()
 const paths = ref([''])
-const files = ref()
+const files = ref([])
 const show = ref(false)
 
 const octokit = computed(() => store.state.octokit)
