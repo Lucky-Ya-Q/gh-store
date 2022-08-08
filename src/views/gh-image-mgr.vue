@@ -6,8 +6,8 @@
     </n-breadcrumb-item>
   </n-breadcrumb>
   <n-image-group>
-    <n-grid cols="2 450:3 650:4 850:5 1050:6 1250:7" :x-gap="8" :y-gap="8">
-      <n-grid-item v-for="(file,index) of files" :key="index">
+    <n-space>
+      <template v-for="(file,index) of files" :key="index">
         <div class="dir" v-if="file.type==='dir'" @click="tz(file.name)">
           <n-icon size="120" style="width: 100%">
             <folder-outline/>
@@ -15,11 +15,11 @@
           <div style="text-align: center">{{ file.name }}</div>
         </div>
         <div class="img" v-else>
-          <n-image style="width: 100%" :src="file.download_url" object-fit="cover"/>
+          <n-image width="150" height="120" :src="file.download_url" object-fit="contain"/>
           <div style="text-align: center">{{ file.name }}</div>
         </div>
-      </n-grid-item>
-    </n-grid>
+      </template>
+    </n-space>
   </n-image-group>
 </template>
 
@@ -63,9 +63,15 @@ function tz (name) {
 </script>
 
 <style scoped lang="scss">
-.dir {
+.dir,
+.img {
+  width: 150px;
+  height: 170px;
   padding: 10px;
   border: solid 1px red;
+}
+
+.dir {
   //谁做过渡给谁加
   transition: all .3s;
   cursor: pointer;
@@ -73,14 +79,5 @@ function tz (name) {
   &:hover {
     background-color: #e1e1e1;
   }
-}
-
-.img {
-  padding: 10px;
-  border: solid 1px red;
-}
-::v-deep(.n-image img){
-  width: 100%;
-  height: 120px;
 }
 </style>
