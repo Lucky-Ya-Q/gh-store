@@ -6,20 +6,22 @@
     </n-breadcrumb-item>
   </n-breadcrumb>
   <n-image-group>
-    <n-space>
-      <template v-for="(file,index) of files" :key="index">
-        <div class="dir" v-if="file.type==='dir'" @click="tz(file.name)">
-          <n-icon size="120" style="width: 100%">
-            <folder-outline/>
-          </n-icon>
-          <div style="text-align: center">{{ file.name }}</div>
-        </div>
-        <div class="img" v-else>
-          <n-image width="150" height="120" :src="file.download_url" object-fit="contain"/>
-          <div style="text-align: center">{{ file.name }}</div>
-        </div>
-      </template>
-    </n-space>
+    <n-spin :show="show">
+      <n-space>
+        <template v-for="(file,index) of files" :key="index">
+          <div class="dir" v-if="file.type==='dir'" @click="tz(file.name)">
+            <n-icon size="120" style="width: 100%">
+              <folder-outline/>
+            </n-icon>
+            <div style="text-align: center">{{ file.name }}</div>
+          </div>
+          <div class="img" v-else>
+            <n-image width="150" height="120" :src="file.download_url" object-fit="contain"/>
+            <div style="text-align: center">{{ file.name }}</div>
+          </div>
+        </template>
+      </n-space>
+    </n-spin>
   </n-image-group>
 </template>
 
@@ -31,6 +33,7 @@ import { FolderOutline } from '@vicons/ionicons5'
 const store = useStore()
 const paths = ref([''])
 const files = ref()
+const show = ref(false)
 
 const octokit = computed(() => store.state.octokit)
 const user = computed(() => store.state.user)
@@ -47,12 +50,15 @@ watch(paths.value, (newValue) => {
 }, { immediate: true })
 
 function path (paths) {
+  show.value = true
   octokit.value.request('GET /repos/{owner}/{repo}/contents/{path}', {
     owner: user.value.login,
     repo: currentRepo.value,
     path: paths.join('/')
   }).then((data) => {
     files.value = data.data
+  }).finally(() => {
+    show.value = false
   })
 }
 
@@ -68,7 +74,8 @@ function tz (name) {
   width: 150px;
   height: 170px;
   padding: 10px;
-  border: solid 1px red;
+  border: solid 1px rgb(128, 128, 128);
+  border-radius: 8px;
 }
 
 .dir {
@@ -77,7 +84,7 @@ function tz (name) {
   cursor: pointer;
 
   &:hover {
-    background-color: #e1e1e1;
+    background-color: rgba(128, 128, 128, 0.2);
   }
 }
 </style>
