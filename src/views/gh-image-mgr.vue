@@ -13,11 +13,27 @@
             <n-icon size="120" style="width: 100%">
               <folder-outline/>
             </n-icon>
-            <div style="text-align: center">{{ file.name }}</div>
+            <div style="text-align: center">
+              <n-ellipsis style="max-width: 140px">
+                {{ file.name }}
+              </n-ellipsis>
+            </div>
           </div>
           <div class="img" v-else>
-            <n-image width="150" height="120" :src="file.download_url" object-fit="contain"/>
-            <div style="text-align: center">{{ file.name }}</div>
+            <n-image style="border-radius: 5px" width="140" height="120" :src="file.download_url" object-fit="cover"/>
+            <div style="text-align: center">
+              <n-ellipsis style="max-width: 140px">
+                {{ file.name }}
+              </n-ellipsis>
+            </div>
+            <n-space justify="end">
+              <n-icon size="20">
+                <logo-github/>
+              </n-icon>
+              <n-icon size="20">
+                <logo-markdown/>
+              </n-icon>
+            </n-space>
           </div>
         </template>
       </n-space>
@@ -28,7 +44,7 @@
 <script setup>
 import { useStore } from 'vuex'
 import { computed, ref, watch } from 'vue'
-import { FolderOutline } from '@vicons/ionicons5'
+import { FolderOutline, LogoGithub, LogoMarkdown } from '@vicons/ionicons5'
 
 const store = useStore()
 const paths = ref([''])
@@ -71,20 +87,33 @@ function tz (name) {
 <style scoped lang="scss">
 .dir,
 .img {
-  width: 150px;
+  width: 140px;
   height: 170px;
   padding: 10px;
-  border: solid 1px rgb(128, 128, 128);
+  //border: solid 1px rgb(128, 128, 128);
   border-radius: 8px;
-}
-
-.dir {
   //谁做过渡给谁加
   transition: all .3s;
-  cursor: pointer;
 
   &:hover {
     background-color: rgba(128, 128, 128, 0.2);
+  }
+}
+
+.dir {
+  cursor: pointer;
+}
+
+.img {
+  .n-icon {
+    display: none;
+    cursor: pointer;
+  }
+
+  &:hover {
+    .n-icon {
+      display: inline-block;
+    }
   }
 }
 </style>
