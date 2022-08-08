@@ -45,6 +45,7 @@
 import { useStore } from 'vuex'
 import { computed, ref, watch } from 'vue'
 import { FolderOutline, LogoGithub, LogoMarkdown } from '@vicons/ionicons5'
+import { getFileSuffix, isImage } from '@/utils/file-utils'
 
 const store = useStore()
 const paths = ref([''])
@@ -72,7 +73,7 @@ function path (paths) {
     repo: currentRepo.value,
     path: paths.join('/')
   }).then((data) => {
-    files.value = data.data
+    files.value = filter(data.data)
   }).finally(() => {
     show.value = false
   })
@@ -82,6 +83,18 @@ function tz (name) {
   paths.value.push(name)
 }
 
+function filter (files) {
+  const dirs = [] // 目录
+  const imgs = [] // 图片
+  files.forEach(file => {
+    if (file.type === 'dir') {
+      dirs.push(file)
+    } else if (file.type === 'file' && isImage(getFileSuffix(file.name))) {
+      imgs.push(file)
+    }
+  })
+  return [...dirs, ...imgs]
+}
 </script>
 
 <style scoped lang="scss">

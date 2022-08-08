@@ -28,8 +28,8 @@
 
 <script setup>
 import { computed, h, reactive } from 'vue'
-import { NIcon } from 'naive-ui'
-import { CloudUploadOutline, HomeOutline, ImagesOutline } from '@vicons/ionicons5'
+import { NIcon, useMessage } from 'naive-ui'
+import { CloudUploadOutline, HomeOutline, ImagesOutline, SettingsOutline } from '@vicons/ionicons5'
 import GhHeader from '@/views/gh-header'
 import { RouterLink, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
@@ -87,8 +87,21 @@ const menuOptions = [
       ),
     key: 'imageMgr',
     icon: renderIcon(ImagesOutline)
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: '/setting'
+        },
+        { default: () => '设置' }
+      ),
+    key: 'setting',
+    icon: renderIcon(SettingsOutline)
   }
 ]
+window.$message = useMessage()
 </script>
 
 <style scoped lang="scss">
