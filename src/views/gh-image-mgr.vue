@@ -56,7 +56,7 @@ import { getFileSuffix, isImage } from '@/utils/file-utils'
 
 const store = useStore()
 const files = ref([])
-const show = ref(true)
+const show = ref(false)
 
 const octokit = computed(() => store.state.octokit)
 const user = computed(() => store.state.user)
@@ -78,7 +78,7 @@ watch(paths, (newValue) => {
 })
 
 function getFiles (paths) {
-  if (!user.value) return
+  if (!user.value || !currentRepo.value) return
   show.value = true
   octokit.value.request('GET /repos/{owner}/{repo}/contents/{path}', {
     owner: user.value.login,

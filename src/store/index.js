@@ -22,7 +22,7 @@ export default createStore({
     currentRepo: null,
     // 每个仓库的当前目录
     currentDir: {
-      'Lucky-Ya-Q': ['']
+      'Lucky-Ya-Q': [''] // currentRepo: paths
     },
     config: {
       // 暗黑模式
