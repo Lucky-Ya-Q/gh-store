@@ -28,10 +28,8 @@ export default createStore({
       // 暗黑模式
       isDark: false,
       // 菜单是否折叠，值在菜单为垂直时有用
-      collapsed: false
-    },
-    setting: {
-      cdnProvider: ''
+      collapsed: false,
+      cdnProvider: 'jsDelivr'
     }
   },
   getters: {},
@@ -73,10 +71,8 @@ export default createStore({
     reset (state) {
       state.config = {
         isDark: false,
-        collapsed: false
-      }
-      state.setting = {
-        cdnProvider: ''
+        collapsed: false,
+        cdnProvider: 'jsDelivr'
       }
     }
   },
