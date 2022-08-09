@@ -29,7 +29,7 @@ export default createStore({
       isDark: false,
       // 菜单是否折叠，值在菜单为垂直时有用
       collapsed: false,
-      cdnProvider: 'https://cdn.staticaly.com/gh'
+      cdnProvider: 'Staticaly'
     }
   },
   getters: {},
@@ -70,7 +70,7 @@ export default createStore({
       state.config = {
         isDark: false,
         collapsed: false,
-        cdnProvider: 'https://cdn.staticaly.com/gh'
+        cdnProvider: 'Staticaly'
       }
     }
   },

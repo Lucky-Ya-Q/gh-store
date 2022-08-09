@@ -21,7 +21,7 @@
           </div>
           <div class="img" v-else>
             <n-image style="border-radius: 5px" width="140" height="120"
-                     :src="dispose(file.download_url)"
+                     :src="dispose(file)"
                      object-fit="cover"/>
             <div style="text-align: center">
               <n-ellipsis style="max-width: 140px">
@@ -29,10 +29,10 @@
               </n-ellipsis>
             </div>
             <n-space justify="end">
-              <n-icon size="20" @click="copyUrl(file.name,dispose(file.download_url))">
+              <n-icon size="20" @click="copyUrl(file.name,dispose(file))">
                 <logo-github/>
               </n-icon>
-              <n-icon size="20" @click="copyUrl(file.name,dispose(file.download_url),'md')">
+              <n-icon size="20" @click="copyUrl(file.name,dispose(file),'md')">
                 <logo-markdown/>
               </n-icon>
             </n-space>
@@ -91,8 +91,13 @@ const currentDir = computed(() => store.state.currentDir)
 
 const paths = computed(() => currentDir.value[currentRepo.value])
 
-function dispose (url) {
-  return url.replace('https://raw.githubusercontent.com', config.value.cdnProvider)
+function dispose (file) {
+  const cdnProvider = config.value.cdnProvider
+  if (cdnProvider === 'jsDelivr') {
+    return 'https://cdn.jsdelivr.net/gh/' + user.value.login + '/' + currentRepo.value + '/' + file.path
+  } else if (cdnProvider === 'Staticaly') {
+    return file.download_url.replace('https://raw.githubusercontent.com', 'https://cdn.staticaly.com/gh')
+  }
 }
 
 watch(paths, (newValue) => {
