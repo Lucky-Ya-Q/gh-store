@@ -28,7 +28,6 @@
 
 <script setup>
 import { computed, h, reactive } from 'vue'
-import { NIcon, useMessage } from 'naive-ui'
 import { CloudUploadOutline, HomeOutline, ImagesOutline, SettingsOutline } from '@vicons/ionicons5'
 import GhHeader from '@/views/gh-header'
 import { RouterLink, useRoute } from 'vue-router'
@@ -101,7 +100,6 @@ const menuOptions = [
     icon: renderIcon(SettingsOutline)
   }
 ]
-window.$message = useMessage()
 </script>
 
 <style scoped lang="scss">
