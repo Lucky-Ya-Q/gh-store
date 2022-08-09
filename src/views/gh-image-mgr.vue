@@ -65,12 +65,15 @@ const currentRepo = computed(() => store.state.currentRepo)
 // 每个仓库的当前目录
 const currentDir = computed(() => store.state.currentDir)
 
-const paths = computed(() => {
-  store.commit('initCurrentDir', currentRepo.value)
-  return currentDir.value[currentRepo.value]
-})
+const paths = computed(() => currentDir.value[currentRepo.value])
 
 watch(paths, (newValue) => {
+  if (!newValue) {
+    store.commit('setCurrentDir', {
+      currentRepo: currentRepo.value,
+      name: newValue = ['']
+    })
+  }
   getFiles(newValue)
 }, {
   immediate: true,
