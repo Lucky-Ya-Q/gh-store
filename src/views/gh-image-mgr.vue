@@ -21,7 +21,7 @@
           </div>
           <div class="img" v-else>
             <n-image style="border-radius: 5px" width="140" height="120"
-                     :src="file.download_url.replace('https://raw.githubusercontent.com',config.cdnProvider)"
+                     :src="dispose(file.download_url)"
                      object-fit="cover"/>
             <div style="text-align: center">
               <n-ellipsis style="max-width: 140px">
@@ -29,10 +29,10 @@
               </n-ellipsis>
             </div>
             <n-space justify="end">
-              <n-icon size="20">
+              <n-icon size="20" @click="copyUrl(file.name,dispose(file.download_url))">
                 <logo-github/>
               </n-icon>
-              <n-icon size="20">
+              <n-icon size="20" @click="copyUrl(file.name,dispose(file.download_url),'md')">
                 <logo-markdown/>
               </n-icon>
             </n-space>
@@ -55,6 +55,27 @@ import { useStore } from 'vuex'
 import { computed, ref, watch } from 'vue'
 import { FolderOpenOutline, FolderOutline, LogoGithub, LogoMarkdown } from '@vicons/ionicons5'
 import { getFileSuffix, isImage } from '@/utils/file-utils'
+import { useClipboard } from '@vueuse/core'
+import { useMessage } from 'naive-ui'
+
+const message = useMessage()
+const { copy } = useClipboard()
+
+function copyUrl (name, url, type) {
+  if (type === 'md') {
+    copy(`![${name}](${url})`).then(() => {
+      message.success('复制 Markdown 格式成功！')
+    }).catch(() => {
+      message.error('复制失败！')
+    })
+  } else {
+    copy(url).then(() => {
+      message.success('复制 URL 格式成功！')
+    }).catch(() => {
+      message.error('复制失败！')
+    })
+  }
+}
 
 const store = useStore()
 const files = ref([])
@@ -69,6 +90,10 @@ const config = computed(() => store.state.config)
 const currentDir = computed(() => store.state.currentDir)
 
 const paths = computed(() => currentDir.value[currentRepo.value])
+
+function dispose (url) {
+  return url.replace('https://raw.githubusercontent.com', config.value.cdnProvider)
+}
 
 watch(paths, (newValue) => {
   if (!newValue) {
