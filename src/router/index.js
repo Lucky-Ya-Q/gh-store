@@ -57,18 +57,14 @@ router.beforeEach((to, from, next) => {
     // 在免登录白名单
     next()
   } else {
-    if (user.value) {
-      if (currentRepo.value) {
-        next()
-      } else {
-        next('/index')
-        // 没有选择仓库
-        window.$message.info('请选择图片仓库')
-      }
+    if (user.value && currentRepo.value) {
+      next()
     } else {
-      next('/index')
-      // 没有登录
-      window.$message.info('请先登录并且选择图片仓库')
+      if (from.path === '/') {
+        next('/index')
+      } else {
+        window.$message.info('请先登录并且选择一个图片仓库')
+      }
     }
   }
 })

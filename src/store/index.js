@@ -66,6 +66,18 @@ export default createStore({
       state.user = null
       state.repos = null
       state.currentRepo = null
+    },
+    clear (state) {
+      state.currentDir = {}
+    },
+    reset (state) {
+      state.config = {
+        isDark: false,
+        collapsed: false
+      }
+      state.setting = {
+        cdnProvider: ''
+      }
     }
   },
   actions: {},
