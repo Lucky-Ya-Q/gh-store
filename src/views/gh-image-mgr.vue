@@ -106,7 +106,7 @@ function dispose (file) {
 watch(paths, (newValue) => {
   if (!newValue) {
     store.commit('setCurrentDir', {
-      currentRepoName: currentRepoName.value,
+      currentRepo: currentRepoName.value,
       name: newValue = ['']
     })
   }
@@ -132,14 +132,14 @@ function getFiles (paths) {
 
 function pushCurrentDir (name) {
   store.commit('pushCurrentDir', {
-    currentRepoName: currentRepoName.value,
+    currentRepo: currentRepoName.value,
     name
   })
 }
 
 function spliceCurrentDir (index) {
   store.commit('spliceCurrentDir', {
-    currentRepoName: currentRepoName.value,
+    currentRepo: currentRepoName.value,
     index
   })
 }
