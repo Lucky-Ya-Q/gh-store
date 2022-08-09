@@ -20,7 +20,9 @@
             </div>
           </div>
           <div class="img" v-else>
-            <n-image style="border-radius: 5px" width="140" height="120" :src="file.download_url" object-fit="cover"/>
+            <n-image style="border-radius: 5px" width="140" height="120"
+                     :src="file.download_url.replace('https://raw.githubusercontent.com',config.cdnProvider)"
+                     object-fit="cover"/>
             <div style="text-align: center">
               <n-ellipsis style="max-width: 140px">
                 {{ file.name }}
@@ -61,6 +63,7 @@ const show = ref(false)
 const octokit = computed(() => store.state.octokit)
 const user = computed(() => store.state.user)
 const currentRepo = computed(() => store.state.currentRepo)
+const config = computed(() => store.state.config)
 
 // 每个仓库的当前目录
 const currentDir = computed(() => store.state.currentDir)

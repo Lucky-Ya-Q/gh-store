@@ -38,15 +38,11 @@ const config = computed(() => store.state.config)
 const cdnProviders = reactive([
   {
     label: 'jsDelivr',
-    value: 'jsDelivr'
+    value: 'https://cdn.jsdelivr.net/gh'
   },
   {
     label: 'Staticaly',
-    value: 'Staticaly'
-  },
-  {
-    label: 'Cloudflare',
-    value: 'Cloudflare'
+    value: 'https://cdn.staticaly.com/gh'
   }
 ])
 
