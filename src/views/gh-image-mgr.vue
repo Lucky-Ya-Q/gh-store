@@ -1,5 +1,5 @@
 <template>
-  <n-breadcrumb style="padding-bottom: 24px">
+  <n-breadcrumb style="margin-bottom: 24px">
     <n-breadcrumb-item v-for="(path,index) of paths" :key="index" @click="spliceCurrentDir(index)">
       <n-icon :component="FolderOutline"/>
       {{ path === '' ? '根目录' : path }}
