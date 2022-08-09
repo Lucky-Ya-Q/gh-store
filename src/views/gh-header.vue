@@ -14,7 +14,7 @@
         <template v-if="user">
           <n-select style="width: 180px"
                     :options="repos" label-field="name" value-field="name"
-                    @update:value="handleUpdateValue" :value="currentRepo"
+                    @update:value="handleUpdateValue" :value="currentRepoName"
                     placeholder="请选择仓库" filterable/>
           <n-dropdown trigger="hover" :options="options" @select="handleSelect">
             <n-tag :bordered="false" size="large" checkable>
@@ -48,10 +48,10 @@ const octokit = computed(() => store.state.octokit)
 const user = computed(() => store.state.user)
 const config = computed(() => store.state.config)
 const repos = computed(() => store.state.repos)
-const currentRepo = computed(() => store.state.currentRepo)
+const currentRepoName = computed(() => store.state.currentRepo.name)
 
-function handleUpdateValue (value) {
-  store.commit('setCurrentRepo', value)
+function handleUpdateValue (value, option) {
+  store.commit('setCurrentRepo', option)
 }
 
 function toggle (isDark) {

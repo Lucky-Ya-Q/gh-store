@@ -83,27 +83,30 @@ const show = ref(false)
 
 const octokit = computed(() => store.state.octokit)
 const user = computed(() => store.state.user)
-const currentRepo = computed(() => store.state.currentRepo)
+const currentRepoName = computed(() => store.state.currentRepo.name)
 const config = computed(() => store.state.config)
 
 // 每个仓库的当前目录
 const currentDir = computed(() => store.state.currentDir)
 
-const paths = computed(() => currentDir.value[currentRepo.value])
+const paths = computed(() => currentDir.value[currentRepoName.value])
 
 function dispose (file) {
   const cdnProvider = config.value.cdnProvider
   if (cdnProvider === 'jsDelivr') {
-    return 'https://cdn.jsdelivr.net/gh/' + user.value.login + '/' + currentRepo.value + '/' + file.path
+    return 'https://cdn.jsdelivr.net/gh/' + user.value.login + '/' + currentRepoName.value + '/' + file.path
   } else if (cdnProvider === 'Staticaly') {
-    return file.download_url.replace('https://raw.githubusercontent.com', 'https://cdn.staticaly.com/gh')
+    return file.download_url.replace('https://raw.githubusercontent.com',
+      'https://cdn.staticaly.com/gh')
+  } else if (cdnProvider === 'Cloudflare') {
+    return 'https://git.poker/' + ''
   }
 }
 
 watch(paths, (newValue) => {
   if (!newValue) {
     store.commit('setCurrentDir', {
-      currentRepo: currentRepo.value,
+      currentRepoName: currentRepoName.value,
       name: newValue = ['']
     })
   }
@@ -114,11 +117,11 @@ watch(paths, (newValue) => {
 })
 
 function getFiles (paths) {
-  if (!user.value || !currentRepo.value) return
+  if (!user.value || !currentRepoName.value) return
   show.value = true
   octokit.value.request('GET /repos/{owner}/{repo}/contents/{path}', {
     owner: user.value.login,
-    repo: currentRepo.value,
+    repo: currentRepoName.value,
     path: paths.join('/')
   }).then((data) => {
     files.value = filter(data.data)
@@ -129,14 +132,14 @@ function getFiles (paths) {
 
 function pushCurrentDir (name) {
   store.commit('pushCurrentDir', {
-    currentRepo: currentRepo.value,
+    currentRepoName: currentRepoName.value,
     name
   })
 }
 
 function spliceCurrentDir (index) {
   store.commit('spliceCurrentDir', {
-    currentRepo: currentRepo.value,
+    currentRepoName: currentRepoName.value,
     index
   })
 }

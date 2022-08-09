@@ -19,11 +19,9 @@ export default createStore({
     // GitHub 仓库列表
     repos: null,
     // 当前选中的仓库
-    currentRepo: null,
-    // 每个仓库的当前目录
-    currentDir: {
-      'Lucky-Ya-Q': [''] // currentRepo: paths
-    },
+    currentRepo: {},
+    // 每个仓库的当前目录 currentRepo.name: paths
+    currentDir: {},
     config: {
       // 暗黑模式
       isDark: false,
@@ -61,7 +59,7 @@ export default createStore({
     logout (state) {
       state.user = null
       state.repos = null
-      state.currentRepo = null
+      state.currentRepo = {}
     },
     clear (state) {
       state.currentDir = {}

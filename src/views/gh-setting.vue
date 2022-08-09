@@ -43,6 +43,10 @@ const cdnProviders = reactive([
   {
     label: 'Staticaly',
     value: 'Staticaly'
+  },
+  {
+    label: 'Cloudflare',
+    value: 'Cloudflare'
   }
 ])
 
