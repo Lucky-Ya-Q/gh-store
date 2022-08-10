@@ -28,10 +28,11 @@
 
 <script setup>
 import { computed, h, reactive } from 'vue'
-import { CloudUploadOutline, HomeOutline, ImagesOutline, SettingsOutline } from '@vicons/ionicons5'
-import GhHeader from '@/views/gh-header'
 import { RouterLink, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
+import { CloudUploadOutline, HomeOutline, ImagesOutline, SettingsOutline } from '@vicons/ionicons5'
+import GhHeader from '@/views/gh-header'
+import { NIcon } from 'naive-ui'
 
 const style = reactive({
   width: 240,

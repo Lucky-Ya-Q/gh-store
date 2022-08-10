@@ -84,6 +84,8 @@ const show = ref(false)
 const octokit = computed(() => store.state.octokit)
 const user = computed(() => store.state.user)
 const currentRepoName = computed(() => store.state.currentRepo.name)
+// eslint-disable-next-line no-unused-vars
+const currentRepoDefaultBranch = computed(() => store.state.currentRepo.default_branch)
 const config = computed(() => store.state.config)
 
 // 每个仓库的当前目录
@@ -94,12 +96,11 @@ const paths = computed(() => currentDir.value[currentRepoName.value])
 function dispose (file) {
   const cdnProvider = config.value.cdnProvider
   if (cdnProvider === 'jsDelivr') {
-    return 'https://cdn.jsdelivr.net/gh/' + user.value.login + '/' + currentRepoName.value + '/' + file.path
+    return `https://cdn.jsdelivr.net/gh/${user.value.login}/${currentRepoName.value}/${file.path}`
   } else if (cdnProvider === 'Staticaly') {
-    return file.download_url.replace('https://raw.githubusercontent.com',
-      'https://cdn.staticaly.com/gh')
+    return `https://cdn.staticaly.com/gh/${user.value.login}/${currentRepoName.value}@${currentRepoDefaultBranch.value}/${file.path}`
   } else if (cdnProvider === 'Cloudflare') {
-    return 'https://git.poker/' + ''
+    return `https://git.poker/${user.value.login}/${currentRepoName.value}/blob/${currentRepoDefaultBranch.value}/${file.path}?raw=true`
   }
 }
 

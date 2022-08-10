@@ -41,7 +41,7 @@ const cdnProviders = reactive([
     value: 'jsDelivr'
   },
   {
-    label: 'Staticaly',
+    label: 'Staticaly（推荐）',
     value: 'Staticaly'
   },
   {
