@@ -6,7 +6,7 @@
     </n-space>
   </n-card>
   <n-card title="CDN提供商">
-    <n-space vertical>
+    <n-space>
       <n-select style="width: 200px"
                 :value="config.cdnProvider"
                 :options="cdnProviders"
