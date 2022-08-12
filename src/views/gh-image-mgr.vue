@@ -7,7 +7,7 @@
   </n-breadcrumb>
   <n-image-group>
     <n-spin :show="show">
-      <n-space v-if="files.length > 0">
+      <div class="container" v-if="files.length > 0">
         <template v-for="(file,index) of files" :key="index">
           <div class="dir" v-if="file.type==='dir'" @click="pushCurrentDir(file.name)">
             <n-icon size="120" style="width: 100%">
@@ -38,7 +38,7 @@
             </n-space>
           </div>
         </template>
-      </n-space>
+      </div>
       <n-empty v-else description="空文件夹" size="huge">
         <template #icon>
           <n-icon>
@@ -160,6 +160,13 @@ function filter (files) {
 </script>
 
 <style scoped lang="scss">
+.container {
+  display: grid;
+  justify-content: space-evenly;
+  grid-template-columns: repeat(auto-fill, 160px);
+  grid-gap: 10px;
+}
+
 .dir,
 .img {
   width: 140px;
